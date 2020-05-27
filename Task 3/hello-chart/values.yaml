@@ -55,12 +55,9 @@ ingress:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "*.homework"
-      paths:
-        - path: /otusapp($|/)(.*)
-          backend:
-            serviceName: myapp-hello-chart
-            servicePort: 9000
+    - host: "arch.homework"
+      paths: ["/otusapp($|/)(.*)"]
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
