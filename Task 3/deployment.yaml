@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-chart-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-chart-app
+  template:
+    metadata:
+      labels:
+        app: hello-chart-app
+    spec:
+      containers:
+        - name: hello-chart
+          image: hello-chart:v2
+          env:
+            - name: DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: hello-secret
+                  key: DATABASE_URI
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: hello-config
+                  key: GREETING
+          ports:
+            - name: web
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /user/version
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+              httpGet:
+                port: 8080
+                path: /user/health
+              initialDelaySeconds: 10
+              periodSeconds: 5

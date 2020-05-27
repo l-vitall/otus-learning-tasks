@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "36377cf3-f4bb-454e-8fb2-8b5f99205a97",
+		"name": "Cruid WebApp tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "создать пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59f5b676-e027-47e7-977f-85bb483550d2",
+						"exec": [
+							"var responseJson = JSON.parse(responseBody)",
+							"pm.collectionVariables.set(\"UserId\", responseJson[\"id\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Petia\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/user/",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получить пользователя",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/user/{{UserId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{UserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "обновить пользователя",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": {{UserId}},\n    \"name\": \"Tania\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/user/{{UserId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{UserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "удалить пользователя",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "82dada57-4365-4ef9-b409-166c7389297c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a3d2031c-254a-45b0-a161-779c81a7a95e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "88ecd300-1c95-48c6-aeb2-0579de225566",
+			"key": "UserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a5980adb-f908-4012-9048-d2b4af1f0b17",
+			"key": "baseUrl",
+			"value": "arch.homework/otusapp",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

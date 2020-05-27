@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-chart-demo
+  labels:
+    app: hello-chart-demo
+spec:
+  containers:
+  - name: hello-chart-demo
+    image: hello-chart:v1
+    imagePullPolicy: IfNotPresent
+    ports:
+      - containerPort: 8080

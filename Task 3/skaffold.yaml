@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+metadata:
+  name: task-
+build:
+  artifacts:
+  - image: hello-chart
+    context: CruidWebApi
+deploy:
+  kubectl:
+    manifests:
+    - app-config.yaml
+    - postgres.yaml
+    - initdb.yaml
+    - deployment.yaml
+    - service.yaml
+    - ingress.yaml

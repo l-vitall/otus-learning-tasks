@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-chart-service
+spec:
+  selector:
+    app: hello-chart-app
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 8080
+  type: NodePort
