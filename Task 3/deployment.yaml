@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: hello-chart
-          image: hello-chart:v2
+          image: vlukanin/otus-learning-tasks:0.67.0
           env:
             - name: DATABASE_URI
               valueFrom:
