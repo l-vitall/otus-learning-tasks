@@ -96,10 +96,18 @@
 		{
 			"name": "удалить пользователя",
 			"request": {
-				"method": "GET",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://{{baseUrl}}/user/{{UserId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{UserId}}"
+					]
 				}
 			},
 			"response": []
@@ -129,13 +137,13 @@
 	],
 	"variable": [
 		{
-			"id": "88ecd300-1c95-48c6-aeb2-0579de225566",
+			"id": "2088114b-2a90-4b46-867f-caadd3018574",
 			"key": "UserId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a5980adb-f908-4012-9048-d2b4af1f0b17",
+			"id": "162b8f03-6be0-4f4f-9361-cf57a0dfad4b",
 			"key": "baseUrl",
 			"value": "arch.homework/otusapp",
 			"type": "string"
