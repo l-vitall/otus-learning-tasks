@@ -51,10 +51,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/register",
+					"raw": "http://{{baseUrl}}/user/register",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -100,10 +100,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -141,10 +141,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -185,10 +185,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/login",
+					"raw": "http://{{baseUrl}}/user/login",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -227,10 +227,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -281,10 +281,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -323,10 +323,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -381,10 +381,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/register",
+					"raw": "http://{{baseUrl}}/user/register",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -425,10 +425,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/login",
+					"raw": "http://{{baseUrl}}/user/login",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -465,10 +465,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -519,10 +519,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/{{userId}}",
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -573,10 +573,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{domen}}/user/{{newUserId}}",
+					"raw": "http://{{baseUrl}}/user/{{newUserId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -615,10 +615,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{domen}}/user/{{newUserId}}",
+					"raw": "http://{{baseUrl}}/user/{{newUserId}}",
 					"protocol": "http",
 					"host": [
-						"{{domen}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"user",
@@ -654,53 +654,53 @@
 	],
 	"variable": [
 		{
-			"id": "9953cedf-9c7f-478c-856e-cb119d27b0cb",
+			"id": "97c7d3b9-00b3-4667-a02e-f9a0e259df7f",
 			"key": "IDtoken",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjQiLCJuYmYiOjE1OTQ4Mjk3NDYsImV4cCI6MTU5NTQzNDU0NiwiaWF0IjoxNTk0ODI5NzQ2fQ.yTJJv5zr6OzC7fmwXDGNdM_27T-C5ekObw2PAXgb-1g"
 		},
 		{
-			"id": "e57cf3cf-5ab8-47d8-826a-6de300596758",
+			"id": "53ef1c18-907f-47e0-878b-480352bf7355",
 			"key": "password",
 			"value": "uy7GUXC2NpFkifE"
 		},
 		{
-			"id": "3bb0d7e2-fbfb-40f9-a063-196803049f28",
+			"id": "c91598a5-41bb-406e-855e-df96acc2043a",
 			"key": "email",
 			"value": "Thelma.Mayer@gmail.com"
 		},
 		{
-			"id": "10af2536-cbb4-44fa-8a81-18430505bff3",
+			"id": "83b7f1af-9fdf-4fbb-83ac-b18d09a4bf88",
 			"key": "login",
 			"value": "Monica_Armstrong"
 		},
 		{
-			"id": "d861544c-14b4-4e4f-9c00-ef3789d2f8cc",
+			"id": "31a5f766-6e0b-4c46-a530-5506e4285276",
 			"key": "firstName",
 			"value": "Daisha"
 		},
 		{
-			"id": "00dc18c6-fe3a-48af-bd93-08648b231608",
+			"id": "743190c2-5791-425f-bf51-ef5e5f808282",
 			"key": "lastName",
 			"value": "Lesch"
 		},
 		{
-			"id": "fe009dd3-d95c-41ae-a4c9-f5918d82e908",
+			"id": "38eb043b-6542-46ff-803b-dfbeb31afacd",
 			"key": "userId",
 			"value": 3
 		},
 		{
-			"id": "194417e9-1a4e-436a-a4db-4b420d149e3f",
+			"id": "c6517e51-6a7b-4aed-a9cb-c0dc2be2dc67",
 			"key": "changedLastName",
 			"value": "Kukuev"
 		},
 		{
-			"id": "683cd197-167a-4164-947e-937d510a91b7",
+			"id": "3e670a7e-3ad6-4ed8-9fcd-fb91a798a37b",
 			"key": "newUserId",
 			"value": 4
 		},
 		{
-			"id": "439d6a81-2d0e-4b6d-976f-03079f8c139e",
-			"key": "domen",
+			"id": "9ccf3f4c-18f2-4dce-a1dc-f9ab3c0a0b14",
+			"key": "baseUrl",
 			"value": "arch.homework"
 		}
 	],
