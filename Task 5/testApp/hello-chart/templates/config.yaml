@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-config-test-app
+data:
+  GREETING: Bonjour
+  SECRET: THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hello-secret-test-app
+type: Opaque
+data:
+  DATABASE_URI: {{ printf "User ID=%s;Password=%s;Host=%s;Port=%s;Database=%s;Pooling=true;" .Values.postgresql.postgresqlUsername .Values.postgresql.postgresqlPassword (include "postgresql.fullname" .) .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase  | b64enc | quote }}

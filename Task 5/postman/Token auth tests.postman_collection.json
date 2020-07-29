@@ -1,0 +1,708 @@
+{
+	"info": {
+		"_postman_id": "e93eadcb-7bfb-4969-b004-bf7d623ba909",
+		"name": "Token auth tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "регистрация",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a92fd5c-cdd3-4e78-b159-8928b3ad3425",
+						"exec": [
+							"pm.test(\"Register test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"userId\", jsonData.id);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6b771cbf-010d-49c8-b45a-c034f0dfcfd8",
+						"exec": [
+							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))",
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))",
+							"pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"{{lastName}}\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/register",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновить данные пользователя без логина",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c425536-99e7-437e-a5a4-a4c0e5706cd8",
+						"exec": [
+							"pm.test(\"Register test\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": {{userId}},\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"Kukuev\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверить данные о пользователе без логина",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f9cb0f69-f0fa-4a9a-828b-98d963d62563",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "логин",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "736fab94-444a-48f3-bfda-20b3bd29dfe9",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.collectionVariables.set(\"IDtoken\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Username\": \"{{login}}\", \"Password\": \"{{password}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/login",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверить данные о пользователе",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a7bc3f0-d928-41f6-baa2-e66b3e62bf36",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновить данные пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ebcc959d-346e-4966-b250-b902ae389025",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": {{userId}},\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"{{changedLastName}}\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверить данные о пользователе",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f541be8-5d38-4339-9462-7c60189f631c",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"changedLastName\"))",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "регистрация пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c389c534-b1c4-4373-9a2a-d08fffcf242f",
+						"exec": [
+							"pm.test(\"Register test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"newUserId\", jsonData.id);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5eedee6d-9d26-416b-9e31-4fe329c44b50",
+						"exec": [
+							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))",
+							"pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"{{lastName}}\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/register",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "логин пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "06071301-94ba-4def-9913-1ef835c27681",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.collectionVariables.set(\"IDtoken\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Username\": \"{{login}}\", \"Password\": \"{{password}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/login",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверить данные о пользователе 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1df03ec1-447a-4f2d-b2bf-6974a0e8659d",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновить данные пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21758ea7-1c8f-440c-ba20-d6f66346a57b",
+						"exec": [
+							"pm.test(\"Register test\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": {{userId}},\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"{{lastName}}\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновить данные пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e1221105-e25e-4fa6-bd4c-23ab465206ee",
+						"exec": [
+							"pm.test(\"Register test\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": {{newUserId}},\n\t\"Username\" : \"{{login}}\",\n\t\"FirstName\" : \"{{firstName}}\",\n\t\"LastName\" : \"{{changedLastName}}\",\n\t\"Password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domen}}/user/{{newUserId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{newUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверить данные о пользователе 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "354096e3-9b60-4614-ae06-8719e96e79ec",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"changedLastName\"))",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domen}}/user/{{newUserId}}",
+					"protocol": "http",
+					"host": [
+						"{{domen}}"
+					],
+					"path": [
+						"user",
+						"{{newUserId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b9138b75-a886-4213-ae53-449f101de806",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "423ee71c-d440-4c2f-9c6e-3dafe75d8a89",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "9953cedf-9c7f-478c-856e-cb119d27b0cb",
+			"key": "IDtoken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjQiLCJuYmYiOjE1OTQ4Mjk3NDYsImV4cCI6MTU5NTQzNDU0NiwiaWF0IjoxNTk0ODI5NzQ2fQ.yTJJv5zr6OzC7fmwXDGNdM_27T-C5ekObw2PAXgb-1g"
+		},
+		{
+			"id": "e57cf3cf-5ab8-47d8-826a-6de300596758",
+			"key": "password",
+			"value": "uy7GUXC2NpFkifE"
+		},
+		{
+			"id": "3bb0d7e2-fbfb-40f9-a063-196803049f28",
+			"key": "email",
+			"value": "Thelma.Mayer@gmail.com"
+		},
+		{
+			"id": "10af2536-cbb4-44fa-8a81-18430505bff3",
+			"key": "login",
+			"value": "Monica_Armstrong"
+		},
+		{
+			"id": "d861544c-14b4-4e4f-9c00-ef3789d2f8cc",
+			"key": "firstName",
+			"value": "Daisha"
+		},
+		{
+			"id": "00dc18c6-fe3a-48af-bd93-08648b231608",
+			"key": "lastName",
+			"value": "Lesch"
+		},
+		{
+			"id": "fe009dd3-d95c-41ae-a4c9-f5918d82e908",
+			"key": "userId",
+			"value": 3
+		},
+		{
+			"id": "194417e9-1a4e-436a-a4db-4b420d149e3f",
+			"key": "changedLastName",
+			"value": "Kukuev"
+		},
+		{
+			"id": "683cd197-167a-4164-947e-937d510a91b7",
+			"key": "newUserId",
+			"value": 4
+		},
+		{
+			"id": "439d6a81-2d0e-4b6d-976f-03079f8c139e",
+			"key": "domen",
+			"value": "arch.homework"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
