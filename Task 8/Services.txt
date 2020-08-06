@@ -1,0 +1,119 @@
+//////////////////
+Authentication service
+Описание:
+Получает данные пользователся и создает аккаунт
+Получает userName и Email и возвращает JWT токен либо ошибку
+
+Запросы:
+- POST /token 
+{
+  grant_type
+  username
+  password
+}
+
+Команды:
+-
+
+События:
+-
+
+Зависимости:
+-
+
+Вопросы:
+-
+
+//////////////////
+
+User service
+Описание:
+Обрабатывает команды на CRUD записей пользователей.
+Обрабатывает команды на поиск, фильтрацию, сортировку списка записей пользователей.
+
+Запросы:
+- GET /user?{userId}
+- GEt /users?search=(creationDate eq '2020-07-21') AND ((dailyNumberOfCalories gt 2000) OR (dailyNumberOfCalories lt 1000))&orderBy=email desc&limit=3&offset=3
+
+Команды:
+- GET /users/confirmEmail?{email}&{confirmationCode}
+- POST /users/InviteUser
+{
+    "Email"
+}
+
+- POST /users/unlockUser
+{
+    "Email"
+}
+
+- POST /users
+{
+    "firstName",
+    "lastName",
+    "email",
+    "password",
+    "dailyNumberOfCalories"
+}
+
+- PUT /users
+{
+    "firstName",
+    "lastName",
+    "email",
+    "dailyNumberOfCalories"
+}
+
+- DELETE /users
+{
+    "Email"
+}
+
+События:
+-
+
+Зависимости:
+-
+
+Вопросы:
+-
+
+////////////////////
+
+
+CaloriesRecords service
+Описание:
+Обрабатывает команды на CRUD записей приемов пищи
+Обрабатывает команды на поиск, фильтрацию, сортировку списка записей приемов пищи
+
+Запросы:
+- GET /сaloriesRecords?{calorieRecord}
+- GEt /сaloriesRecords?search=(date eq '2020-07-21') AND ((numberOfCalories gt 20) OR (numberOfCalories lt 1100))&orderBy=text desc&limit=3&offset=3
+
+Команды:
+- POST /сaloriesRecords
+{
+    "text",
+    "numberOfCalories"
+}
+
+- PUT /сaloriesRecords
+{
+    "id",
+    "text",
+    "numberOfCalories"
+}
+
+- DELETE /сaloriesRecords/{caloriesRecordId}
+{
+    "Email"
+}
+
+События:
+-
+
+Зависимости:
+- от сервиса пользователей
+
+Вопросы:
+-
