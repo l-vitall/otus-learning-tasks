@@ -1,4 +1,36 @@
 //////////////////
+Push notifications service
+Описание:
+Получает нотификации для пользователей от других сервисов
+Возвращает нотификации для пользователя
+
+Запросы:
+- GET /notifications 
+{
+  ownerEmail
+}
+
+Команды:
+- POST /notifications 
+{
+  ownerEmail
+  creationDate
+  text
+  kind
+}
+
+События:
+-
+
+Зависимости:
+- от всех других сервисов
+- или добавить message queue service и зависеть только от его
+
+Вопросы:
+-
+
+
+//////////////////
 Authentication service
 Описание:
 Получает данные пользователся и создает аккаунт
@@ -16,7 +48,7 @@ Authentication service
 -
 
 События:
--
+- User authenticated
 
 Зависимости:
 -
@@ -24,8 +56,8 @@ Authentication service
 Вопросы:
 -
 
-//////////////////
 
+//////////////////
 User service
 Описание:
 Обрабатывает команды на CRUD записей пользователей.
@@ -70,7 +102,7 @@ User service
 }
 
 События:
--
+- User updated
 
 Зависимости:
 -
@@ -78,9 +110,8 @@ User service
 Вопросы:
 -
 
+
 ////////////////////
-
-
 CaloriesRecords service
 Описание:
 Обрабатывает команды на CRUD записей приемов пищи
@@ -110,7 +141,9 @@ CaloriesRecords service
 }
 
 События:
--
+- CaloriesRecord updated
+- CaloriesRecord created
+- CaloriesRecord deleted
 
 Зависимости:
 - от сервиса пользователей
