@@ -1,0 +1,54 @@
+{{- if .Values.stressTest.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "stress-test-job"
+spec:
+  template:
+    metadata:
+      name: "stress-test-job"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: ab-test-job
+          image: httpd
+          env:
+            - name: INGRESS_CONTROLLER_ADDRESS
+              value: {{ include "hello-chart.fullname" . }}
+            - name: REQUEST_NUMBER
+              value: {{ .Values.stressTest.requestNumber | quote }}
+          command:
+            - sh
+            - "-c"
+            - |
+              /bin/sh <<'EOF'
+              # CREATE
+              while true; \
+                do echo "{\"name\":\"test$RANDOM\"}" > user.json;
+                ab -n$REQUEST_NUMBER -H 'Host: arch.homework' -T application/json -p ./user.json http://$INGRESS_CONTROLLER_ADDRESS/otusapp/user; \
+                sleep 1; \
+              done &
+              # GET
+              while true; \
+                do ab -n$REQUEST_NUMBER -H 'Host: arch.homework' http://$INGRESS_CONTROLLER_ADDRESS/otusapp/user/1; \
+                sleep 1; \
+              done &
+              # UPDATE
+              while true; \
+                do echo "{\"id\": 1, \"name\":\"test$RANDOM\"}" > user.json;
+                ab -n$REQUEST_NUMBER -H 'Host: arch.homework' -T application/json -u ./user.json http://$INGRESS_CONTROLLER_ADDRESS/otusapp/user/1; \
+                sleep 1; \
+              done &
+              # DELETE
+              while true; \
+                do ab -n$REQUEST_NUMBER -H 'Host: arch.homework' -m DELETE http://$INGRESS_CONTROLLER_ADDRESS/otusapp/user/100; \
+                sleep 1; \
+              done &
+              # GET ALL
+              while true; \
+                do ab -n$REQUEST_NUMBER -H 'Host: arch.homework' http://$INGRESS_CONTROLLER_ADDRESS/otusapp/user/users; \
+                sleep 1; \
+              done;
+              EOF
+  backoffLimit: 0
+{{- end }}

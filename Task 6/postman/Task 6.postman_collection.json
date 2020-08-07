@@ -1,0 +1,342 @@
+{
+	"info": {
+		"_postman_id": "38666f46-b76f-42a4-adcf-e2cf9d95e5d5",
+		"name": "Task 6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe4e1a36-cd92-4f3e-b74d-278baa096867",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/token",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/caloriesrecords?search=date eq '2020-07-21' AND Time gt '14:00'",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time gt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering from cache",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/caloriesrecords?search=date eq '2020-07-21' AND Time gt '14:00'",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time gt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering different",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/caloriesrecords?search=date eq '2020-07-21' AND Time lt '14:00'",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time lt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering different from cache",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/caloriesrecords?search=date eq '2020-07-21' AND Time lt '14:00'",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time lt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users first time",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/users",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users from cache",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/users",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users different query (first time again)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/users?limit=5",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users different query from cache",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{baseUrl}}/users?limit=5",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f237c3e4-ca2f-4f5e-8a8c-3f9efd4c4560",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "32c40cda-9063-431d-8549-1c2cab930a8c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "da5fe5b7-f5e2-4133-b9c2-aa91d20914c9",
+			"key": "email",
+			"value": "admin@mailinator.com"
+		},
+		{
+			"id": "4bb3b218-9c83-4671-b373-e778e12b62a0",
+			"key": "password",
+			"value": "Qweqwe123?"
+		},
+		{
+			"id": "c4ea2699-33b4-4e02-87ed-9a5f6e1d7553",
+			"key": "baseUrl",
+			"value": "arch.homework"
+		},
+		{
+			"id": "39736389-44ae-4209-a2af-38268bacf1fa",
+			"key": "IDtoken",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
