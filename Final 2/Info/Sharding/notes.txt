@@ -1,0 +1,2 @@
+https://github.com/jinhong-/citus-k8s/blob/master/workers.yaml
+https://www.citusdata.com/blog/2018/01/22/multi-tenant-web-apps-with-dot-net-core-and-postgres/

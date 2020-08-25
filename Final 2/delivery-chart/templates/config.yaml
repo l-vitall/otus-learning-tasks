@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delivery-config
+data:
+  GREETING: Bonjour
+  SECRET: THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://+:5090
+  CACHE_ENABLED: "0"
+  KAFKA_CONSUMER_URI: my-release-kafka.finalwork.svc.cluster.local:9092
+  KAFKA_PRODUCER_URI: my-release-kafka-0.my-release-kafka-headless.finalwork.svc.cluster.local:9092
+  TEST_MODE: "0"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: delivery-secret
+type: Opaque
+data:
+  DATABASE_URI: {{ printf "User ID=%s;Password=%s;Host=%s;Port=%s;Database=%s;Pooling=true;" .Values.postgresql.postgresqlUsername .Values.postgresql.postgresqlPassword (include "postgresql.fullname" .) .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase  | b64enc | quote }}

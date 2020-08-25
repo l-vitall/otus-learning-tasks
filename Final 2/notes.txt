@@ -1,0 +1,181 @@
+- Декомпозиция сервисов (карта сервисов)
+- Нагрузочное тестирование - результаты
+- мониторинг показать что есть
+
+Rest API для учета потребленных калорий, формирования рекомендаций и покупки ежедневного питания с доставкой.
+
++ Сделать нормальный ордер с Id блюд
++ посмотреть на потребление ресурсов конкретным подом
+
+Доработки:
++ идемпотентность:
+	- естественный ключ для ордера
+	- версия для профиля юзера - 
+	- transactional outbox - супер
+		- OrderService - когда обновляется статус заказа и генерится нотификейшн юзеру
+- сага
+	- компенсируемые транзакции - их надо откатывать руками, если что
+	- поворотная транзакция
+	- те, которые можно ретраить
+	- без оркестрации (хореография)
+	- с оркестрацией
+		- Семантическая блокировка:
+			- основной записи (ордер) - статус пендинг
+			- каждый шаг ждет эвента от предыдущего и действует после него
+			- каждый шаг ждет эвента от последующего и откатывается после него
+			- если поворотная транзакция прошла (есть эвент) - пендинг меняется на active
+		- Коммутативные обновления:
+			- когда шаги можно выполнить в любом порядке (например если не устанавливаем значение, а применяем дельту)
+		- Пессимистичное представление:
+			- первая операция - резервирование денег
+			- последняя операция - возврат денег клиенту. Тогда не пострадаем от грязных чтений
+		- Повторное чтение - перед обновлением повторно считываем данные чтобы убедиться, что они не изменились
+		- Файл версий
+			- сначала накапливаем изменения, потом применяем
+		- By Value
+			- низкий риск - меньше гарантий (сага или вообще без)
+			- высокий риск - распределенные транзакции (двухфазные коммиты)
+	- Делаем хореографию:
+		+ OrderService создает ордер в Pending и бросает CreateOrder
+		- RestaurantsService получает CreateOrder и "резервирует" и бросает OrderReserved / OrderReserveRejected
+			- получает OrderPaymentFailed и "снимает резерв"
+			- получает OrderPayed и снимает флаг "pending"
+		- DeliveryService получает OrderReserved и "резервирует" доставку. Бросает OrdereliveryReserved / OrdereliveryRejected
+		- OrderService обновляет статус ордера в Active по OrderPaid или в Rejected по OrderReserveFailed
+- нагрузочное тестирование
++ строка вместо енума
+
+Доработки:
+- База данных пользователей должна быть у AuthService - для ауфентикации и у UserService для хранения дополнительной информации (настройки, профиль и т.п.)
+- CaloriesProvider должен использовать только роли и UserId
+- NоtificationsService должен использовать свою базу данных
+- все должны писать в очередь сообщений, которую читает Notifications Service
+
+
+Новая функциональность:
++ Менеджер запрашивает записи юзера, что тот ест обычно
+	- ok
++ Менеджер запрашивает возможности ресторанов (меню)
+	- Restaurant Service
+	- список блюд по категориям (первое, второе, салад, десерт и т.п.)
+		- Id
+		- RestaurantId
+		- Text
+		- CaloriesCount
+		- Kind
+		- Comment
++ Менеджер формирует рекомендации по питанию
+	- Recommendations service
+	- список блюд на неделю, пока из одного ресторана для простоты доставки
+	- юзеру приходит нотификейшн
++ Юзер получает нотификацию и запрашивает рекомендации по питанию
+	- Recommendations service
+- Юзер формирует заказ, получает тикет и сумму
+	- Order Service
+	- отправляет список блюд по дням по приемам пищи
+	- получает OrderId и Total
+- Юзер оплачивает заказ
+	- Payment Service
+	- отправляет OrderId и Total, получает OK
+	- OrderService получает уведомление, что заказ оплачен и помечает в бд
+	- Restaurant Service получает уведомление о своем оплаченном заказе и пускает дело в ход самостоятельно
+	- в заказе должен быть адрес доставки, телефон юзера
+- Ресторан и служба доставки получают событие и исполняют заказ
+
+Новые сервисы:
+- Сервис оплаты (заглушка)
+- Сервис рекомендаций по питанию
+- Сервис заказов
+- Сервис возможносте ресторана
+
+helm delete myauth myuser my-order mydelivery mynotification mypayment myrecommendation myrecords myrestaurant
+
+//Auth
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Auth"
+docker build -t auth-chart:99.5010.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myauth ./auth-chart
+curl http://arch.homework/healthAuth
+
+//User
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.User"
+docker build -t user-chart:99.5020.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myuser ./user-chart
+curl http://arch.homework/healthUser
+
+//Records
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Records"
+docker build -t records-chart:99.5030.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myrecords ./records-chart
+curl http://arch.homework/healthRecords
+
+//Notification
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Notification"
+docker build -t notification-chart:99.5040.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install mynotifications ./notification-chart
+curl http://arch.homework/healthNotification
+
+//Restaurant
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Restaurant"
+docker build -t restaurant-chart:99.5050.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myrestaurant ./restaurant-chart
+curl http://arch.homework/healthRestaurant
+
+//Recommendation
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Recommendation"
+docker build -t recommendation-chart:99.5060.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myrecommendation ./recommendation-chart
+curl http://arch.homework/healthRecommendation
+
+//Order
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Order"
+docker build -t order-chart:99.5070.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install myorder ./order-chart
+curl http://arch.homework/healthOrder
+
+//Payment
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Payment"
+docker build -t payment-chart:99.5080.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install mypayment ./payment-chart
+curl http://arch.homework/healthPayment
+
+//Delivery
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2/app/Calories.Delivery"
+docker build -t delivery-chart:99.5090.1 .
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Final 2"
+helm install mydelivery ./delivery-chart
+curl http://arch.homework/healthDelivery
+
+kubectl create namespace finalwork
+kubectl config set-context --current --namespace=finalwork
+
+watch kubectl get all -n finalwork
+
+cd "/Users/vlukanin/Library/Mobile Documents/com~apple~CloudDocs/Projects/ArchitectLearning/Task 6"
+
+
+
+///Monitoring
+minikube service myrecords-records-chart -n finalwork --url
+curl -H 'Host: arch.homework' http://192.168.64.2:30520/metrics
+
+
+kubectl -n finalwork  exec -it  myapp-postgresql-0 -- /bin/bash
+psql -h 127.0.0.1 -p 5432 -U myuser -W myapp
+\dt
+
+kubectl delete jobs.batch myauth
+
+Для нагрузочного тестирования:
+- данные в бд добавил через Postman
+- brew install python
+pip3 install locust
+- pip3 install faker
+locust -f locustfile.py --headless -u 100000 -r 10 --run-time 15m --host http://arch.homework --step-load --step-users 25 --step-time 15s

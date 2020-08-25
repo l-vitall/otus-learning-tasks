@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "9276b930-ed84-425b-a657-959dcc45cb11",
+		"name": "Otus Final Work generate data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create CaloriesRecords 2 Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4dd7131-d244-471a-9539-a29ba571745b",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ZjBlYTMwYS0xMDFlLTQ3MjQtODU1Zi04NDFmNDNlMjNmNWIiLCJuYW1lIjoiYWxpY2UxQG1haWxpbmF0b3IuY29tIiwicm9sZSI6IlVzZXIiLCJ0b2tlbl91c2FnZSI6ImFjY2Vzc190b2tlbiIsImp0aSI6Ijg1ZjdlODEyLTFjMzAtNDI2ZC04MDBhLWUxMjI1YzZjMjViYyIsInNjb3BlIjoicm9sZXMiLCJuYmYiOjE1OTgyNzA1MTQsImV4cCI6MTU5ODI3NDExNCwiaWF0IjoxNTk4MjcwNTE0LCJpc3MiOiJodHRwOi8vYXJjaC5ob21ld29yay8ifQ.mNWFIiFtM8VLHEGgg2uqqIuiQDZnv6K-N0Pf6YNIVys"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"{{$randomWord}}\",\r\n    \"numberOfCalories\": {{$randomInt}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework/caloriesrecords",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

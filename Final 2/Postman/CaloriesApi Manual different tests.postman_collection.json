@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "fbeace0d-7a99-4569-b24b-808438a63f42",
+		"name": "CaloriesApi Manual different tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Root test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/caloriesRecords/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesRecords",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with sorting",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords?orderBy=text desc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "orderBy",
+							"value": "text desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords?search=(date eq '2020-07-21') AND ((numberOfCalories gt 20) OR (numberOfCalories lt 1100))",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "(date eq '2020-07-21') AND ((numberOfCalories gt 20) OR (numberOfCalories lt 1100))"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord with filtering Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords?search=date eq '2020-07-21' AND Time gt '14:00'",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time gt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8MUS52skOe9LlV8_bsEPFiAkm8PpAzhMa_Up4dcKJc2mj10P3Bj0mHrobjHhHOF19EaDW0bBuEltnu3PUGclQnqOkpJtjoEiabjY8UCM9CMjTSdZtqgM7lqPRwj1qsFrt62_h7XYLVuJAh4-mLXpvBlJ2NRTd3KEE2uEIk-o7Elx-iPnDW4dBkNKYBpyp9-LYr8I-UPShYANj0B43s861hUr3NU8o4IhsxKLKmip8lmwzt8zyr_xdGWywY_uQAbt6EVrG_LTpAOzqD1GWDln7J_XuqKPtHzdvL41CnXxeGqALQaj72OvanOTurFjVskBCx34J5JSw2UR9JYmPZA_sGuFLivVVufNqbjjhLp8dRqdCucqHci2UMQ20ib0W6-6EL7ElW1wqoY4zUXxNScVtCzT_EP29mra8Hq8l13k_G6IYikeoKWcO0RY-0q4XMcZCsqlI_zlv3cFdiYWQ6__GqCa1mGplW0zxEyngz4rYcdAMMsnCtGb2eFyO8NDbS-QIJqIqDOTUnAY8LUeFqY4K8o",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete CaloriesRecords",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords/6",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create CaloriesRecords",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 800\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/users/getVisibleUsers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users",
+						"getVisibleUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Johnson\",\r\n    \"email\": \"jane@mailinator.com\",\r\n    \"password\": \"Qweqwe123?\",\r\n    \"dailyNumberOfCalories\": 10000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConfirmEmail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/users/confirmEmail?email=jane@mailinator.com&confirmationCode=CfDJ8MUS52skOe9LlV8%252fbsEPFiB2K%252fj6VoWMZQokqhWaYfiAze6XAsTx0GUwBPH2Oa7NyQTMoygIh%252fXgK87%252bHJdNfKiAonMJLQstyT9FstL4Hx4AoxmvjOhI9rIp9%252fUn77dGo1iy9iQq76gHbl7SCxjeof4ZHobL0hbf7SbthNbfi7qXghqhkVCPZCDjLGlfgrnI0i3hm3Ukx1OiDthCfXFZMOna6ImjwYMl2SRufklYpOU6LdInbR%252bnZgd5%252b4hpdJW1iQ%253d%253d",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users",
+						"confirmEmail"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "jane@mailinator.com"
+						},
+						{
+							"key": "confirmationCode",
+							"value": "CfDJ8MUS52skOe9LlV8%252fbsEPFiB2K%252fj6VoWMZQokqhWaYfiAze6XAsTx0GUwBPH2Oa7NyQTMoygIh%252fXgK87%252bHJdNfKiAonMJLQstyT9FstL4Hx4AoxmvjOhI9rIp9%252fUn77dGo1iy9iQq76gHbl7SCxjeof4ZHobL0hbf7SbthNbfi7qXghqhkVCPZCDjLGlfgrnI0i3hm3Ukx1OiDthCfXFZMOna6ImjwYMl2SRufklYpOU6LdInbR%252bnZgd5%252b4hpdJW1iQ%253d%253d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "jane@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Qweqwe123?",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "admin@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Qweqwe123?",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unlock user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8MUS52skOe9LlV8_bsEPFiCplg0YLPULMibVNbgEboAGUFRCFtnQLVHabstTCgUVdFdJ39q2hi5qSEtvofH0WBKL2IbcbViSugGvfqlP-zbvNqXz-JdCqMo9htCWJV7aOi37KK2u4QlklDQyKh8BUrQa86FnPuJZ4guPwfcUkFOuqGzM6clXbOn6IGKRz5dvYFuWLZqYHbqzXBmfhXrrrH55z9KGhUppqIL8oTc1g9Lbomz2xlu2REoWoevqVaY4egT_skUJ9EAO2lGmddqzprWyrbsRmphZ8LSN3_9ttpOxE_umwvlsVwKL4pnMWjMzBu-udkrqwI_Yp4BYPBgIBDHMX6G-PG8okdg3sOMT2Lbp9zmFcwd6BqSCm3HfWFaLeMq1S8FErm7VHg_qCK8d3T8_TU-MB7YQY8Z61weCE0b7omTLtLeLXzta7NAPKdPmUIKzo4D0ZMJZBciDyJ9iMUHLIFrVmuUHwYxXD9UYpmk8hEw7hpJDwNOqrjyAnEzcI75J9iCPe5341GFCPUs81HY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "jane@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Qweqwe123?",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users/unlockUser?userId=39244a17-1e71-4237-b42f-3c0541daf404",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users",
+						"unlockUser"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "39244a17-1e71-4237-b42f-3c0541daf404"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invite user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8MUS52skOe9LlV8_bsEPFiBHMA4UXRMm-J-Q6tqyEug0W1P70FloV0oFx8idTKIHrFh-upOHAHW-j0p6DcpTZ9tD9M1x51cFRFJkzQicMjW0fGdta19rIX_N7g9fOtiyJbSFHltiLni5NxEi73FN55mOfMvOz3i-_0pnV2Vv4GnrCAal3CyKOVTy83gzDNjdLUJhqvTb1Nzgq8f4cVkSXGxCqv_xWh5raz68tQgLTin52JSsRClaghmeu2R-A1UvdsIA6O_AgBtisB6kxYOZhrqmW8AliZxVWMBP415t2wbziQPTvMnzY_I2TMNGLDDM989f5TAue9kv9BsAb0xc1h6FfKgKDbMvfLP4DpJ36FBKCgG8bRF3zYMoIVKA24CVcoIZGLRoUUQRUzYeGSddy6iBY1b3iy2DImFSqRzgEmdwLfmikSSfdh4sq_tM5ooBC62FbDXox4XGCWAC1MBGgbKzno3lVRls-MbERx8F43mbIKMuWwIcXTj4ypbq_Q9OGagiX3IL8rdSB9IpF1SdFQU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\" : \"jane@mailinator.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users/InviteUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users",
+						"InviteUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserInfo Unauthirized",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://localhost:5001/userInfo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"userInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

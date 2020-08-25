@@ -1,0 +1,1166 @@
+{
+	"info": {
+		"_postman_id": "4203a7ed-8b35-412d-b1ed-be81b793fde3",
+		"name": "Otus Final Work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Test User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "75d10345-7a32-473b-9fc0-9850d71536d9",
+						"exec": [
+							"pm.test(\"test user create\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "922be55b-8551-414b-96df-5b55a3953300",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Mailinator\",\r\n    \"email\": \"bob@mailinator.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"dailyNumberOfCalories\": 7000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/users",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b16ffbab-e421-43c4-8e48-53660de01af7",
+						"exec": [
+							"pm.test(\"test user create\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "eef2a2ae-67e5-4b0d-884d-36b8c71dacbc",
+						"exec": [
+							"pm.collectionVariables.set(\"randomEmail\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))\r",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"dailyNumberOfCalories\": 10000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/users",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "724b66fb-d997-4da4-82d7-98c791dbc32d",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/token",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Test User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e34fcf12-6571-494b-a79c-bc542a4d6341",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bob@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/token",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create CaloriesRecords 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "93aef530-b935-4579-92c7-548da5b2c86e",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 8000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesrecords",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f0edd311-257f-4ebc-b0ea-0b2ab13aa41d",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesrecords",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca453317-3f5c-43bf-b218-7062d007c64c",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesrecords/8b28e0aa-7f3e-4238-8fd4-fccd42934530",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesrecords",
+						"8b28e0aa-7f3e-4238-8fd4-fccd42934530"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Health Auth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{domainUri}}/configAuth",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"configAuth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Health User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{domainUri}}/healthUser",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"healthUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserProfile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/userProfiles/userProfile",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"userProfiles",
+						"userProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserProfiles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/userProfiles",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"userProfiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eb28b45b-4923-442d-886a-324cc9dd984f",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Den2\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"den1@mailinator.com\",\r\n    \"dailyNumberOfCalories\": 7000,\r\n    \"version\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/userProfiles",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"userProfiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Manager",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5475cc2-ea52-4e51-be64-079895ed1911",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{managerEmail}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/token",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords by Manager",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "24ba6994-843c-4723-a7f9-5ba51e6530d1",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesrecords?limit=10&search=userEmail eq 'bob@mailinator.com'",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "search",
+							"value": "userEmail eq 'bob@mailinator.com'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Menu Items",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/menuItems",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"menuItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Recommendation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f9cd186a-baed-411d-84c0-5cc56aaa4bde",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"You need a balanced diet to be healthy. Here a weakly menu: {...Borsch, Grilled Pork, Coca-Cola...}\",\r\n    \"dailyNumberOfCalories\": 3000,\r\n    \"totalCost\": 299,\r\n    \"userEmail\": \"bob@mailinator.com\",\r\n    \"createdAt\": \"2020-08-24\",\r\n    \"startDate\": \"2020-08-25\",\r\n    \"endDate\": \"2020-09-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesRecommendations",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesRecommendations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5878bc71-036f-4f10-90a4-fb63518c7806",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{adminEmail}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/token",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Restaurant Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/restaurantOrders",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"restaurantOrders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User Again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff01910d-42a8-4c2d-9e28-ce88343e86dc",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bob@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/token",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{domainUri}}/users/fa24aa9b-409f-42b2-aa54-9a2084630c27",
+					"protocol": "https",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"users",
+						"fa24aa9b-409f-42b2-aa54-9a2084630c27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Notifications",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"den1@mailinator.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/notifications",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recommendations",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"bob@mailinator.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/caloriesRecommendations",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"caloriesRecommendations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f35cf6f1-abb5-4b2b-96cf-7e1308610524",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderId\": \"77dbe2e5-f502-4564-a8f2-23e53d153ca4\",\r\n    \"deliveryAddress\": \"Nsk, Lenina str 1-11\" ,\r\n    \"deliveryTime\": \"13:00 - 18:00\" ,\r\n    \"orderContent\": \"{{id: 1, {name: 'Borsch'}, {id: 2, {name: 'Grilled pork & potatoes'}, {id: 3, {name: 'Coca-Cola'}}\",\r\n    \"totalCost\": 299,\r\n    \"restaurantId\": 1,\r\n    \"UserPhone\": \"4872-77-70-70\",\r\n    \"CaloriesRecommendationId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/order",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Orders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"bob@mailinator.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/order",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Restaurant Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/restaurantOrders",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"restaurantOrders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Deliveries",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{domainUri}}/delivery",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"delivery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pay for Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acc85d96-71b3-47f7-8292-b34fb3290816",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderId\": \"77dbe2e5-f502-4564-a8f2-23e53d153ca3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{domainUri}}/payment",
+					"protocol": "http",
+					"host": [
+						"{{domainUri}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0656c9a9-63e2-4e65-9c40-1191117f81c6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "44d5166f-ad5e-4b9c-9167-def9d5d5f134",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "e0ef0f8c-d0d1-4c6c-a29b-3aaf11989fd7",
+			"key": "email",
+			"value": "jane@mailinator.com"
+		},
+		{
+			"id": "f6d00a10-1645-4424-8dba-f85da8774965",
+			"key": "password",
+			"value": "Qweqwe123?"
+		},
+		{
+			"id": "a94b6924-8714-4b44-b588-5d4ddc0f9661",
+			"key": "IDtoken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYTI0YWE5Yi00MDlmLTQyYjItYWE1NC05YTIwODQ2MzBjMjciLCJuYW1lIjoidXNlckBtYWlsaW5hdG9yLmNvbSIsInJvbGUiOiJVc2VyIiwidG9rZW5fdXNhZ2UiOiJhY2Nlc3NfdG9rZW4iLCJqdGkiOiI3ZDQ2MGJjZS1kYTJmLTQ1YzMtOTU3MS03NDAyOWQ4YTMzZTYiLCJzY29wZSI6InJvbGVzIiwibmJmIjoxNTk3OTQzMDA3LCJleHAiOjE1OTc5NDY2MDcsImlhdCI6MTU5Nzk0MzAwNywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDEwLyJ9.6Gz_eOIwlz6pfL7AI68jmCHUxRqV_DN_nWTnaU1Xcts"
+		},
+		{
+			"id": "81ad9b07-c8f2-4435-91fd-2a389339c45c",
+			"key": "adminEmail",
+			"value": "admin@mailinator.com"
+		},
+		{
+			"id": "f7c882e3-e9bb-444c-a34c-d4a695c7b7eb",
+			"key": "firstName",
+			"value": "Afton"
+		},
+		{
+			"id": "c9a114b2-ac75-4f86-bf83-7dfe2187a832",
+			"key": "lastName",
+			"value": "Stroman"
+		},
+		{
+			"id": "ce49c9ee-9446-4731-b6eb-5a97ed06e0bf",
+			"key": "randomEmail",
+			"value": "Nicklaus.DAmore@yahoo.com"
+		},
+		{
+			"id": "b11171ed-4937-4e2c-a463-30c2a66d6f3b",
+			"key": "domainUri",
+			"value": "arch.homework"
+		},
+		{
+			"id": "19287214-008b-4506-8c84-83ae6ee5921d",
+			"key": "managerEmail",
+			"value": "manager@mailinator.com"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

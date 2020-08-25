@@ -1,0 +1,891 @@
+{
+	"info": {
+		"_postman_id": "f2c71b3c-5152-4f06-b4af-52fe32c289c0",
+		"name": "CaloriesApi Admin Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddd34a1a-3f86-477d-86ac-fecadd4f97d7",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff5d2c57-825e-4c5e-867c-48a9a2f26a60",
+						"exec": [
+							"pm.test(\"test user create\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "975f2dea-1de2-4957-a0fb-c5d3c7051042",
+						"exec": [
+							"pm.collectionVariables.set(\"testEmail\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))\r",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{testEmail}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"dailyNumberOfCalories\": 10000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a54fc6d1-83b7-4636-b8de-1f1830480363",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.value[0].text).to.eql(\"Tea\");\r",
+							"    pm.expect(jsonData.value.length).to.eql(3);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords?orderBy=text desc&search=date eq '2020-07-21' AND Time gt '14:00'",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					],
+					"query": [
+						{
+							"key": "orderBy",
+							"value": "text desc"
+						},
+						{
+							"key": "search",
+							"value": "date eq '2020-07-21' AND Time gt '14:00'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create CaloriesRecords 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7fcf2d53-5d76-4ddb-95d6-41c354506fad",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 8000,\r\n    \"email\": \"{{testEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update CaloriesRecords",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2900c88f-9be7-4d96-94e5-339b0494599f",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{ExistingCaloriesRecordId}}\",\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7695042-170a-4b98-9c8f-962d839cbd70",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.numberOfCalories).to.eql(30);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords/{{ExistingCaloriesRecordId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords",
+						"{{ExistingCaloriesRecordId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete CaloriesRecords",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "70263075-04a8-4490-9213-e3c6270c555e",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords/{{ExistingCaloriesRecordId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords",
+						"{{ExistingCaloriesRecordId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecord",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ded35da1-4fa5-4fad-8788-fde48b0b5fdc",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords/{{ExistingCaloriesRecordId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords",
+						"{{ExistingCaloriesRecordId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users as Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd1f3f83-b886-448a-88d4-30f8d7aeef6f",
+						"exec": [
+							"    pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value[0].firstName).to.eql(\"Admin\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/users?orderBy=Email&search=firstname ne 'Manager'",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "orderBy",
+							"value": "Email"
+						},
+						{
+							"key": "search",
+							"value": "firstname ne 'Manager'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5302b44-1150-4357-94c5-4b4bb091636a",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.given_name).to.eql(\"Admin\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/userInfo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"userInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserInfoByEmail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a733cc6-f676-4831-8e0c-78d5ffbda0c0",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.given_name).to.eql(pm.collectionVariables.get(\"firstName\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\" : \"{{testEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/userInfo/userInfoByEmail",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"userInfo",
+						"userInfoByEmail"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{testEmail}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9c814076-1c3c-480f-8cba-640fdff3d8bf",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Puren\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{testEmail}}\",\r\n    \"dailyNumberOfCalories\": 230\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserInfoByEmail 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3fa4e93b-e7d3-4e93-afd6-c297f7c3fdcd",
+						"exec": [
+							"pm.test(\"test token data\", function () {",
+							"    pm.response.to.have.status(200);",
+							"",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.given_name).to.eql(\"Puren\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\" : \"{{testEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/userInfo/userInfoByEmail",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"userInfo",
+						"userInfoByEmail"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{testEmail}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Created User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9cb2f6c1-b5ed-4202-a985-081a511634d8",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{testEmail}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ef3538d5-2381-4fa5-b822-a391e2b394b0",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{IDtoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\" : \"{{testEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Deleted User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "39c80857-2e3b-40b3-8236-3a0a49abd24f",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{testEmail}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b0c5bed6-42de-4e63-93a4-f25ec4259f02",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c3c51640-211e-4293-ada0-b640cdb8c273",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "11d37be6-49fa-4caf-b4f6-79e11275c267",
+			"key": "IDtoken",
+			"value": "CfDJ8MUS52skOe9LlV8_bsEPFiCQN8NSHby_6VNeMPnN-yQiN1tk5uyhmsXdP_HoijcPa0pGI98Z7O8hi3wTtmVE_ky2OqtMFNFhc8gLdA6sQaHjZ0OkgCSD9PH-ePB3G6JFEBRXMs-0HFHcd-Kouq_6AFxvnlwAcKxrfnB7Yh9rNQv8E2ChwXpU7t-_ZQDKPCpISjnoddYaimEO_1o7ovoIupq0v0uLI1EyUIZCrJhCX6fnV2vMAJsJaHfv5fzEihdSfj6hBhlvyFOMjEJIXryf3vHLTtNLK4-a7tVZsPO6ccPE8ol9IjoeJAz6YAlmQ4q74hDAh7GKeljKq63-m7WjxMNELU4srtJgecNEt8und4pSQk47KD6Is5Pwl5nflPIueJji9yrRJyVxspuLPe5U9V98AFlwZSPvBDEGR4wywj6TqgPrXWVK7yC_HSm1OikgL-IeS-DvMhzvw04dORjQY_mHhiQmxn46semRGdMcaVyW-rOqFU_JRmPOErnWK-qVBsyBUfV09R0ytCun8vzUQkA"
+		},
+		{
+			"id": "b676d1d4-d689-4fe7-9d7d-eb53750b8f4a",
+			"key": "email",
+			"value": "admin@mailinator.com"
+		},
+		{
+			"id": "bb64ef50-1e56-4d5d-ae43-cf17b7389374",
+			"key": "firstName",
+			"value": "Eric"
+		},
+		{
+			"id": "8b869331-b57e-46b6-989b-322ccfc75dcc",
+			"key": "lastName",
+			"value": "Kreiger"
+		},
+		{
+			"id": "74363850-ead7-449a-939b-804887e8f70f",
+			"key": "password",
+			"value": "Qweqwe123?"
+		},
+		{
+			"id": "53b9b726-ab81-4cd8-9a5d-74a1c1eec325",
+			"key": "testEmail",
+			"value": "Jerry_Von@yahoo.com"
+		},
+		{
+			"id": "56b47995-dcfe-445c-ad91-646485f4828e",
+			"key": "ExistingCaloriesRecordId",
+			"value": "9A4986DE-1D2C-4CC1-84B2-7898750F9754"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

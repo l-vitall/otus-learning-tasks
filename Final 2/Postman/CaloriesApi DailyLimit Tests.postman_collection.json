@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "29aaa4b8-c61c-4350-a0d8-8dc769348884",
+		"name": "CaloriesApi DailyLimit Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "36068970-878b-4f71-856e-4f4758095774",
+						"exec": [
+							"pm.test(\"test user create\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f2bf41ba-19a1-4744-b846-aff58fb241a2",
+						"exec": [
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))\r",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"dailyNumberOfCalories\": 10000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3ecf889e-e5de-4d2a-88a1-2c60799967ac",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7219427-0d4a-42f2-99ac-62a151483504",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create CaloriesRecords 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7219393b-37ba-4ecd-a961-84f2e2f695b8",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 8000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1835e323-a663-4bb3-9ce6-22bcf3ae073e",
+						"exec": [
+							"    pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(1);\r",
+							"    pm.expect(jsonData.value[0].dailyCaloriesLessThanExpected).to.eql(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create CaloriesRecords 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3580e571-ebed-4fcc-aef4-70caca381144",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Hamburger\",\r\n    \"numberOfCalories\": 3000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3b9d69e3-45e5-41cc-9b0e-961fc7dc30ea",
+						"exec": [
+							"    pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(2);\r",
+							"    pm.expect(jsonData.value[0].dailyCaloriesLessThanExpected).to.eql(false);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/caloriesrecords",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7d03f514-e785-4b72-997e-49ebec672b91",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "27cc98d1-b729-4e0d-bc4c-293dd97ab1dd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "97b8ca2f-be8f-45e1-a7ba-b802c83738cb",
+			"key": "IDtoken",
+			"value": "CfDJ8MUS52skOe9LlV8_bsEPFiDYyiihUimHVFUengOcaTTp66PkYkMSqXql2cLu_M0Wrhb54a5PDD6e5Y1INjxotOfLk8qj7POMAL3nFhRy4WV3njrebqs_rfvbUYmiK39UH9zd8-2IZeta4n9WkFbIYp69SrEAuhikVhLBth2a6g0_jjJ4zRqxRTJsJyW8Zwdj1NWzbbafNBhYKLTePErtuurNrkw7tNkpPgGek5VZwoHPspVxbvaP7HQRJDsqvmYeAbp_9m_YyfZyQyHAC-viroeqRC3A2iAee5e4xwmhakPZ46uLzYcYG6yyDG13g6U7Km7j449Q_WQL6UU_QrQf4CAUzrTfwOK4Vfy64sNsL1nIOcxt3JJSU4zX_73LJI2r3rTDxLpGXB8Na9e8IU6k12U2OqH0vDzGJZgDjkR9AGJACnTDqmbs-vTh65ef1gBgsKbqFu4ndA6ce7Xaeoxc-eu8usounUTAmSmyot3aMEYzL1pT2b_rkpZCjZCbMHlryPaMvaqV8qTuFcFFwQtrjjM"
+		},
+		{
+			"id": "d4b06688-0999-40d2-a212-8a383ab05cb1",
+			"key": "email",
+			"value": "Jaida_Zulauf1@gmail.com"
+		},
+		{
+			"id": "05fb8a52-867f-4c23-9188-1af59a011393",
+			"key": "firstName",
+			"value": "Lambert"
+		},
+		{
+			"id": "796a2c92-997d-4f05-a733-5babca1f9822",
+			"key": "lastName",
+			"value": "Wolf"
+		},
+		{
+			"id": "e9ae53d7-3999-403a-b6e1-21163dad2084",
+			"key": "password",
+			"value": "Qweqwe123?"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "79859557-c9b1-4ca3-99dd-9ad00b250a43",
+		"name": "Task 8",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login User Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6c18d804-642d-4424-896f-829aab16de12",
+						"exec": [
+							"pm.test(\"test user logged\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var responseJSON = JSON.parse(responseBody)\r",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"access_token\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "user@mailinator.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Qweqwe123?",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework/token",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get CaloriesRecords 1 Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aebbdacb-0ae6-4f7a-9ecd-eb29b1683714",
+						"exec": [
+							"pm.test(\"test token data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.size).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{IDtoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://arch.homework/caloriesrecords",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"caloriesrecords"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b7e5d098-1c25-435f-bdf9-062226ea0400",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3d08b42a-2b36-4c33-9810-18023303d058",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3dd2c10b-50c5-4e21-8c80-f1bc475d09bb",
+			"key": "IDtoken",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
